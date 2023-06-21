@@ -1,0 +1,117 @@
+---
+configurationName: "EMCal corrections for data"
+pass: ""
+sharedParameters:
+    cellBranchName: "usedefault"
+    clusterBranchName: "usedefault"
+    clusterCombinedBranchName: "caloClustersCombined"
+    trackBranchName: "usedefault"
+inputObjects:
+    cells:
+        cells:
+            branchName: "sharedParameters:cellBranchName"
+    clusterContainers:
+        baseClusterContainer:
+            # Sets the branch name
+            branchName: "sharedParameters:clusterBranchName"
+            # Takes all default cuts!
+        # Used after clusterizer
+        baseClusterContainer1:
+            # Sets the branch name
+            branchName: "sharedParameters:clusterBranchName"
+            minE: 0.0                        # Formerly clusterEMin
+            minPt: 0.0                       # Formerly clusterPtMin
+        # Used for cluster-track matcher and after
+        baseClusterContainer2:
+            # Sets the branch name
+            branchName: "sharedParameters:clusterBranchName"
+            minE: 0.0                        # Formerly clusterEMin
+            minPt: 0.0                       # Formerly clusterPtMin
+            clusNonLinCorrEnergyCut: 0.15    # Formerly "minPt" and then clusterNonLinCorrEnergyMin
+    trackContainers:
+        trackContainerName:
+            # Sets the branch name
+            branchName: "sharedParameters:trackBranchName"
+            minPt: 0.15                    # formerly "minPt"
+            
+# Cell energy
+CellEnergy:
+    createHistos: true
+    enabled: true
+    cellsNames:
+        - cells
+
+# Cell bad channel
+CellBadChannel:
+    createHistos: true
+    enabled: true
+    cellsNames:
+        - cells
+        
+# Cell Time Calib
+CellTimeCalib:
+    createHistos: true
+    enabled: true
+    cellsNames:
+        - cells
+
+# Clusterizer
+Clusterizer:
+    createHistos: true
+    clusterizer: kClusterizerv2
+    enabled: true
+    cellTimeMin: -50e-9
+    cellTimeMax: 100e-9
+    cellE: 0.1
+    seedE: 0.3
+    cellsNames:
+        - cells
+    # By selecting the cluster container here, we set where it will be output
+    clusterContainersNames:
+        - baseClusterContainer
+
+# Exotics
+ClusterExotics:
+    createHistos: true
+    enabled: true
+    cellsNames:
+        - cells
+    clusterContainersNames:
+        - baseClusterContainer1
+
+# Non-linearity
+ClusterNonLinearity:
+    createHistos: true
+    enabled: true
+    cellsNames:
+        - cells
+    clusterContainersNames:
+        - baseClusterContainer1
+
+# Cluster-track matcher
+ClusterTrackMatcher:
+    createHistos: true
+    useDCA: false
+    usePIDmass: false
+    enabled: true
+    cellsNames:
+        - cells
+    clusterContainersNames:
+        - baseClusterContainer2
+    trackContainersNames:
+        - trackContainerName
+
+# Hadronic correction
+ClusterHadronicCorrection:
+    createHistos: true
+    enabled: true
+    plotOversubtractionHistograms: true
+    doMomDepMatching: true
+    hadCorr: 2.
+    cellsNames:
+        - cells
+    clusterContainersNames:
+        - baseClusterContainer2
+    trackContainersNames:
+        - trackContainerName
+

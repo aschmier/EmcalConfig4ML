@@ -1,0 +1,273 @@
+configurationName: "EMCal_CalibPi0_Train"
+pass:   "default"
+
+#
+# ─── CLUSTER/TRACK CONTAINERS────────────────────────────────────────────────────
+#
+
+inputObjects:
+    clusterContainers:
+        defaultClusterContainer:
+            branchName: "usedefault"
+        defaultClusterContainer_1:
+            minE: 0.5
+        ClusterContainerS500A100v3Shaper:
+            branchName: "S500A100v3ShaperClustersBranch"
+        ClusterContainerS100A50v3Shaper:
+            branchName: "S100A50v3ShaperClustersBranch"
+        ClusterContainerS500A100v1Shaper:
+            branchName: "S500A100v1ShaperClustersBranch"
+        ClusterContainerS100A50v1Shaper:
+            branchName: "S100A50v1ShaperClustersBranch"
+        
+
+#
+# ─── CELL CALIBRATION ─────────────────────────────────────────────────────────
+#
+# - setting "false" for all other configs than default ensures no cell correction is applied twice
+
+CellEnergy:                    #CUSTOMIZE # turns off/on the cell energy correction by OADB coefficients.
+    enabled: false
+    createHistos: true
+    enableShaperCorrection: false                   # ADDED !!
+    enableNewTempCalib: true  #Run-by-run (temperature) corrections.
+CellBadChannel:                #CUSTOMIZE # take all cells, or all cells but bad, or all cells but bad and warm.
+    enabled: true
+    load1DBadChMap: true
+CellTimeCalib:
+    enabled: true
+    createHistos: true
+    doCalibrateLowGain: true                        # ADDED !!
+    doMergedBCs: true                               # ADDED !!
+    doCalibMergedLG: false                          # ADDED !!
+    
+
+CellEnergy_S500A100v3Shaper:                    #CUSTOMIZE # turns off/on the cell energy correction by OADB coefficients.
+    enabled: false
+    createHistos: true
+    enableShaperCorrection: false                   # ADDED !!
+    enableNewTempCalib: true  #Run-by-run (temperature) corrections.
+CellBadChannel_S500A100v3Shaper:                #CUSTOMIZE # take all cells, or all cells but bad, or all cells but bad and warm.
+    enabled: true
+    load1DBadChMap: true
+CellTimeCalib_S500A100v3Shaper:
+    enabled: true
+    createHistos: true
+    doCalibrateLowGain: true                        # ADDED !!
+    doMergedBCs: true                               # ADDED !!
+    doCalibMergedLG: false                          # ADDED !!
+    
+CellEnergy_S100A50v3Shaper:                    #CUSTOMIZE # turns off/on the cell energy correction by OADB coefficients.
+    enabled: false
+CellBadChannel_S100A50v3Shaper:                #CUSTOMIZE # take all cells, or all cells but bad, or all cells but bad and warm.
+    enabled: false
+CellTimeCalib_S100A50v3Shaper:
+    enabled: false
+    
+CellEnergy_S500A100v1Shaper:                    #CUSTOMIZE # turns off/on the cell energy correction by OADB coefficients.
+    enabled: false
+CellBadChannel_S500A100v1Shaper:                #CUSTOMIZE # take all cells, or all cells but bad, or all cells but bad and warm.
+    enabled: false
+CellTimeCalib_S500A100v1Shaper:
+    enabled: false
+    
+CellEnergy_S100A50v1Shaper:                    #CUSTOMIZE # turns off/on the cell energy correction by OADB coefficients.
+    enabled: false
+CellBadChannel_S100A50v1Shaper:                #CUSTOMIZE # take all cells, or all cells but bad, or all cells but bad and warm.
+    enabled: false
+CellTimeCalib_S100A50v1Shaper:
+    enabled: false
+# ─── DEFAULT ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction 
+# - Clusterizer: V3
+# - NonLinCorr : yes
+
+    
+Clusterizer:
+    enabled: false
+    createHistos: true
+    clusterizer: kClusterizerv3
+    cellE: 0.05
+    seedE: 0.1
+    cellTimeMin: -500e-9        # (Do apply time calib, but leave very large cuts -- apply cuts only at wagon configuration level).
+    cellTimeMax:  500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true                            # ADDED !!!!
+ClusterExotics:
+    enabled: false
+    createHistos: true
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+ClusterNonLinearity:
+    enabled: false
+    nonLinFunct: kBeamTestCorrected            # Apply it at the macro level.
+    createHistos: true
+    setForceClusterE: true
+    
+    
+#
+# ─── S500A100v3 ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction 
+# - Clusterizer: V3
+# - Seed: 500 MeV
+# - Agg:  100 MeV
+# - NonLinCorr : kTestBeamShaperWoScale
+
+Clusterizer_S500A100v3Shaper:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv3
+    cellE: 0.1
+    seedE: 0.5
+    cellTimeMin: -500e-9        # (Do apply time calib, but leave very large cuts -- apply cuts only at wagon configuration level).
+    cellTimeMax:  500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true
+    clusterContainersNames:
+        - ClusterContainerS500A100v3Shaper
+ClusterNonLinearity_S500A100v3Shaper:
+    enabled: true
+    nonLinFunct: kTestBeamShaperWoScale           # Apply it at the macro level.
+    createHistos: true
+    setForceClusterE: true
+    clusterContainersNames:
+        - ClusterContainerS500A100v3Shaper
+ClusterExotics_S500A100v3Shaper:
+    enabled: true
+    createHistos: true
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+    clusterContainersNames:
+        - ClusterContainerS500A100v3Shaper
+    
+    
+    #
+# ─── S100A50v3 ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction 
+# - Clusterizer: V3
+# - Seed: 100 MeV
+# - Agg:  50 MeV
+# - NonLinCorr : kTestBeamShaperWoScale
+
+Clusterizer_S100A50v3Shaper:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv3
+    cellE: 0.05
+    seedE: 0.1
+    cellTimeMin: -500e-9        # (Do apply time calib, but leave very large cuts -- apply cuts only at wagon configuration level).
+    cellTimeMax:  500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true
+    clusterContainersNames:
+        - ClusterContainerS100A50v3Shaper
+ClusterNonLinearity_S100A50v3Shaper:
+    enabled: true
+    nonLinFunct: kTestBeamShaperWoScale            # Apply it at the macro level.
+    createHistos: true
+    setForceClusterE: true
+    clusterContainersNames:
+        - ClusterContainerS100A50v3Shaper
+ClusterExotics_S100A50v3Shaper:
+    enabled: true
+    createHistos: true
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+    clusterContainersNames:
+        - ClusterContainerS100A50v3Shaper
+    
+    
+#
+# ─── S500A100v1 ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction 
+# - Clusterizer: V1
+# - Seed: 500 MeV
+# - Agg:  100 MeV
+# - NonLinCorr : kTestBeamShaperWoScale
+
+Clusterizer_S500A100v1Shaper:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv1
+    cellE: 0.1
+    seedE: 0.5
+    cellTimeMin: -500e-9        # (Do apply time calib, but leave very large cuts -- apply cuts only at wagon configuration level).
+    cellTimeMax:  500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true
+    clusterContainersNames:
+        - ClusterContainerS500A100v1Shaper
+ClusterNonLinearity_S500A100v1Shaper:
+    enabled: true
+    nonLinFunct: kTestBeamShaperWoScale            # Apply it at the macro level.
+    createHistos: true
+    setForceClusterE: true
+    clusterContainersNames:
+        - ClusterContainerS500A100v1Shaper
+ClusterExotics_S500A100v1Shaper:
+    enabled: true
+    createHistos: true
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+    clusterContainersNames:
+        - ClusterContainerS500A100v1Shaper
+        
+#
+# ─── S100A50v1 ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction 
+# - Clusterizer: V1
+# - Seed: 100 MeV
+# - Agg:  50 MeV
+# - NonLinCorr : kTestBeamShaperWoScale
+
+Clusterizer_S100A50v1Shaper:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv1
+    cellE: 0.05
+    seedE: 0.1
+    cellTimeMin: -500e-9        # (Do apply time calib, but leave very large cuts -- apply cuts only at wagon configuration level).
+    cellTimeMax:  500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true
+    clusterContainersNames:
+        - ClusterContainerS100A50v1Shaper
+ClusterNonLinearity_S100A50v1Shaper:
+    enabled: true
+    nonLinFunct: kTestBeamShaperWoScale            # Apply it at the macro level.
+    createHistos: true
+    setForceClusterE: true
+    clusterContainersNames:
+        - ClusterContainerS100A50v1Shaper
+ClusterExotics_S100A500v1Shaper:
+    enabled: true
+    createHistos: true
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+    clusterContainersNames:
+        - ClusterContainerS100A50v1Shaper

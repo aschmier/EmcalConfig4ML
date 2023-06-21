@@ -1,0 +1,68 @@
+configurationName: "EMCAL electron/gamma configuration"   # Optional - Simply for user convenience
+pass: "default"                                     # Attempts to automatically retrieve the pass if not specified. Usually of the form "pass#".
+
+#
+# ─── CELL CALIBRATION ─────────────────────────────────────────────────────────
+#
+# - setting "false" for all other configs than default ensures no cell correction is applied twice
+
+CellEnergy:                                         # Cell Energy correction component
+    createHistos: true
+    enabled: true                                   # Whether to enable the task
+    enableNewTempCalib: true                        # ADDED !!
+    enableShaperCorrection: true                    # ADDED !!
+    enableAdditionalScale: true                    # Set an additional energy scale shift on cell level. HIGHLY EXPERIMENTAL and should not be used for standard analyses!
+    additionalScaleValuesSM: [0.981, 0.970, 0.980]  # values for kPi0MCFinal/kTestBeamShaperWoScale
+CellBadChannel:                                     # Bad channel removal at the cell level component
+    enabled: true                                   # Whether to enable the task
+    load1DBadChMap: true
+CellTimeCalib:                                      # Cell Time Calibration component
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # ADDED !!
+    doCalibrateLowGain: true                        # ADDED !!
+    doMergedBCs: true                               # ADDED !!
+    doCalibMergedLG: false                          # ADDED !!
+    doCalibTimeEdep: true                           # ADDED !!
+
+#
+# ─── DEFAULT ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction
+# - Clusterizer: V3
+# - NonLinCorr : no
+# - TrackMatch : no
+
+Clusterizer:                                        # Clusterizer component
+    enabled: true                                   # Whether to enable the task
+    createHistos: false                             # Whether the task should create output histograms
+    clusterizer: kClusterizerv3                     # Type of clusterizer to use. Possible options are defined in the header of the clusterizer
+    cellE: 0.1                                      # Minimum cell energy CHANGED!!
+    seedE: 0.5                                      # Seed energy threshold
+    cellTimeMin: -500e-9
+    cellTimeMax: +500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true                            # ADDED !!!!
+    remapMcAod: false
+    diffEAggregation: 0.0
+ClusterExotics:                                     # Cluster exotics identification component (actual removal is handled by the cluster container)
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # Whether the task should create outputhistograms
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+ClusterPositionCorrection:
+    enabled: true
+    createHistos: true
+    setSMEtaValues: [-0.00202935, -0.00140158, -0.00227703, -0.00199786, -0.00165857, -0.00171555, -0.00142823, -0.0012609, -0.00085177, -0.000634324, 0.000312535, 0.000418568, 0.000697378, 0.00126631, 0.000653744, 0.00131928, 0.000181611, 0.00157941, 0.000785721, 0.000699705]
+    setSMPhiValues: [0.000234505, 0.000719762, -0.000709055, -0.000205165, -0.00120058, -0.000116792, -0.000439614, -0.000266938, -0.000810922, -0.00094052, -0.000935156, -3.86511e-05, 0.00183559, 0.00220501, 0.00196468, 0.00216716, 0.00213151, 0.00260019, 0.00326185, 0.00363909]
+    applyToMC: false
+ClusterNonLinearity:                                # Cluster non-linearity correction component
+    enabled: false
+ClusterTrackMatcher:                                # Cluster-track matcher component
+    enabled: false                                  # Whether to enable the task
+ClusterHadronicCorrection:                          # Cluster hadronic correction component
+    enabled: false                                  # Whether to enable the task
+

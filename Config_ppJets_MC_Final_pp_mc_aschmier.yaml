@@ -1,0 +1,47 @@
+period: ""                                         # standard yaml file is located in:
+pass: "default"                                    # AliPhysics/PWG/EMCAL/config/
+
+CellEnergy:                                        # Cell Energy correction component
+    enabled: false                                 # Whether to enable the task
+CellBadChannel:                                    # Bad channel removal at the cell level component
+    enabled: true                                  # Whether to enable the task
+    load1DBadChMap: true                           # load bad channel info from new 1D histograms
+CellTimeCalib:                                     # Cell Time Calibration component
+    enabled: false                                 # no timing information in MC, disable!
+CellEmulateCrosstalk:                              # do emulation of crosstalk between cells
+    enabled: true                                  # this will improve agreement of cluster shapes (M02) between data and MC
+    createHistos: true
+Clusterizer:
+    enabled: true                                  # run a clusterizer
+    clusterizer: kClusterizerv3                    # use V3 clusterizer (faster version of V2)
+    cellE: 0.1                                     # Minimum cell energy
+    seedE: 0.3                                     # Seed energy threshold (Note: when changing this, compatibility with used nonlin is not guaranteed!!)
+    cellTimeMin: -1                                # Min cell time (s)
+    cellTimeMax: +1                                # Max cell time (s)
+    clusterTimeLength: 1e6                         # Maximum time difference between the digits inside EMC cluster (s)
+    recalDistToBadChannels: true                   # True will recalculate the distance to bad channels
+    recalShowerShape: true                         # True will recalculate the shower shape
+    load1DBadChMap: true
+    diffEAggregation: 0.0
+ClusterExotics:
+    enabled: true                                  # Whether to enable the task
+    createHistos: true                             # Whether the task should create output histograms
+    fMaxFcross: 0.97                               #
+    fHighEnergyNdiffCut: 50                        #
+    fMinCellEnNdiffCut: 0
+ClusterNonLinearity:
+    enabled: true                                  # Whether to enable the task
+    setForceClusterE: true                         #for cluster energy to correct for non-linearity
+    createHistos: true                             # Whether the task should create output histograms
+    nonLinFunct: kTestBeamFinalMC                  #
+ClusterNonLinearityMCAfterburner:                  # MC Cluster additional non-linearity afterburner correction component - To be applied after the standard non-linearity correction
+    enabled: true
+    setForceClusterE: true                         #for cluster energy to correct for non-linearity
+    afterburnerVersion: kPCM_EMCal
+    setMCPeriod: "kTestBeamDefaultMCRun1"            #corrections
+ClusterTrackMatcher:                               # Cluster-track matcher component
+    enabled: true
+ClusterHadronicCorrection:                         # use no hadronic correction for g-h correlation
+    enabled: true
+    createHistos: true
+    doMomDepMatching: true                         # This enables a momentum dependent eta/phi window for track matching

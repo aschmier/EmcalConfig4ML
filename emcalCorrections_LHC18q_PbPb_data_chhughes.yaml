@@ -1,0 +1,50 @@
+configurationName: "EMCal Corrections configuration for Jet-H LHC181 central analysis"
+CellEnergy:
+    createHistos: true
+    enabled: true                                    
+    enableNewTempCalib: true                         
+    enableShaperCorrection: true                     
+    enableAdditionalScale: true                      
+    additionalScaleValuesSM: [0.981, 0.970, 0.980]   
+    load1DRecalibFactors: true
+CellBadChannel:
+    enabled: true
+    createHistos: true
+    load1DBadChMap: true
+CellTimeCalib:
+    enabled: true
+    createHistos: true
+    doCalibrateLowGain: true                        
+    doMergedBCs: true                               
+    doCalibMergedLG: false                          
+    doCalibTimeEdep: true
+Clusterizer:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv3
+    cellE: 0.1
+    seedE: 0.3
+    cellTimeMin: -500e-9
+    cellTimeMax: +500e-9  
+    recalDistToBadChannels: true
+    recalShowerShape: true                 
+    load1DBadChMap: true                   
+    remapMcAod: false
+    diffEAggregation: 0.0
+ClusterExotics:
+    enabled: true
+    createHistos: true
+    fMaxFcross: 0.97                          
+    fHighEnergyNdiffCut: 50                   
+    fMinCellEnNdiffCut: 0                     
+ClusterNonLinearity:
+    enabled: true
+    createHistos: true
+    createHistos: true
+    nonLinFunct: kTestBeamShaperWoScale 
+ClusterTrackMatcher:
+    enabled: true
+    createHistos: true
+ClusterHadronicCorrection:
+    enabled: true
+    createHistos: true

@@ -1,0 +1,12 @@
+period: ""                                         # standard yaml file is located in:
+pass: "pass1"                                           # AliPhysics/PWG/EMCAL/config/
+CellEnergy:
+    enabled: false
+    createHistos: true
+CellBadChannel:
+    enabled: true
+    createHistos: true
+CellTimeCalib:
+    enabled: false
+    createHistos: true
+

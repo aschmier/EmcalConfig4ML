@@ -1,0 +1,56 @@
+configurationName: "EMCAL gamma configuration MC"   # Optional - Simply for user convenience
+pass: "default"                                     # Attempts to automatically retrieve the pass if not specified. Usually of the form "pass#".
+
+#
+# ─── CELL CALIBRATION ─────────────────────────────────────────────────────────
+#
+# - setting "false" for all other configs than default ensures no cell correction is applied twice
+
+CellEnergy:                                         # Cell Energy correction component
+    enabled: false                                   # Whether to enable the task
+CellBadChannel:                                     # Bad channel removal at the cell level component
+    enabled: true                                   # Whether to enable the task
+    load1DBadChMap: true
+CellTimeCalib:                                      # Cell Time Calibration component
+    enabled: false                                   # Whether to enable the task
+CellEmulateCrosstalk:
+    enabled: true
+    createHistos: true
+
+
+#
+# ─── DEFAULT ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settinga
+# - Clusterizer: V3
+# - NonLinCorr : false
+# - TrackMatch : false
+
+Clusterizer:                                        # Clusterizer component
+    enabled: true                                   # Whether to enable the task
+    clusterizer: kClusterizerv3                     # Type of clusterizer to use. Possible options are defined in the header of the clusterizer
+    cellE: 0.1                                      # Minimum cell energy 
+    seedE: 0.5                                      # Seed energy threshold
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true                            
+    remapMcAod: false
+    cellTimeMin: -1
+    cellTimeMax: +1
+    diffEAggregation: 0.0
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+ClusterExotics:                                     # Cluster exotics identification component (actual removal is handled by the cluster container)
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # Whether the task should create outputhistograms
+    fMaxFcross: 0.97                                
+    fHighEnergyNdiffCut: 50                         
+    fMinCellEnNdiffCut: 0                           
+ClusterNonLinearity:                                # Cluster non-linearity correction component
+    enabled: false                                   # Whether to enable the task
+ClusterNonLinearityMCAfterburner:
+    enabled: false
+ClusterTrackMatcher:                                # Cluster-track matcher component
+    enabled: false                                  # Whether to enable the task
+ClusterHadronicCorrection:                          # Cluster hadronic correction component
+    enabled: false                                  # Whether to enable the task

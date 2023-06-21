@@ -1,0 +1,146 @@
+configurationName: "EMCAL electron/gamma configuration"   # Optional - Simply for user convenience
+pass: "default"                                     # Attempts to automatically retrieve the pass if not specified. Usually of the form "pass#".
+
+#
+# ─── CLUSTER/TRACK CONTAINERS────────────────────────────────────────────────────
+#
+
+inputObjects:                                       # Define all of the input objects for the corrections
+    clusterContainers:                              # Configure clusters
+        defaultClusterContainer:                    # Name of a cluster input
+            branchName: "usedefault"
+        defaultClusterContainer_1:                  # Name of another cluster input which inherits from defaultClusterContainer
+            # The branch name is inherited from defaultClusterContainer!
+            minE: 0.5                               # Cluster min E. Formerly clusterEMin
+        defaultClusterContainer_2:                  # Name of another cluster input which inherits from defaultClusterContainer
+            # The branch name is inherited from defaultClusterContainer!
+            minE: 0.5                               # Cluster min E. Formerly clusterEMin
+            clusNonLinCorrEnergyCut: 0.5            # Cluster non-linearity min E. Formerly "minPt" in the non-linearity AddTask()
+        ClusterContainerNL:                         # like default but with track matching on corr task level
+            branchName: "NLClustersBranch"
+
+    trackContainers:                                # Configure tracks
+        defaultTrackContainer:                      # Name of a track input
+            branchName: "usedefault"                # Set the branch name. "usedefault" is supported.
+        defaultTrackContainer_1:                    # Name of another track input which inherits from defaultTrackContainer
+            minPt: 0.3                              # Track min pt.
+            trackFilterType: kNoTrackFilter          # Set the track filter type. Check the documentation for possible values
+
+sharedParameters:
+    enableMCGenRemovTrack: false                    # apply the MC generators rejection also for track matching
+
+#
+# ─── CELL CALIBRATION ─────────────────────────────────────────────────────────
+#
+# - setting "false" for all other configs than default ensures no cell correction is applied twice
+
+CellEnergy:                                         # Cell Energy correction component
+    createHistos: true
+    enabled: true                                   # Whether to enable the task
+    enableNewTempCalib: true                        # ADDED !!
+    enableShaperCorrection: true                    # ADDED !!
+    enableAdditionalScale: true                    # Set an additional energy scale shift on cell level. HIGHLY EXPERIMENTAL and should not be used for standard analyses!
+    additionalScaleValuesSM: [0.981, 0.970, 0.980]  # values for kPi0MCFinal/kTestBeamShaperWoScale
+    load1DRecalibFactors: false                      # load 1d correction files (should be faster/more efficient)
+CellBadChannel:                                     # Bad channel removal at the cell level component
+    enabled: true                                   # Whether to enable the task
+    load1DBadChMap: true
+CellTimeCalib:                                      # Cell Time Calibration component
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # ADDED !!
+    doCalibrateLowGain: true                        # ADDED !!
+    doMergedBCs: true                               # ADDED !!
+    doCalibMergedLG: false                          # ADDED !!
+    doCalibTimeEdep: true                           # ADDED !!
+
+CellEnergy_NL:
+    enabled: false
+CellBadChannel_NL:
+    enabled: false
+CellTimeCalib_NL:
+    enabled: false
+#
+# ─── DEFAULT ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction
+# - Clusterizer: V3
+# - NonLinCorr : no
+# - TrackMatch : no
+
+Clusterizer:                                        # Clusterizer component
+    enabled: true                                   # Whether to enable the task
+    createHistos: false                             # Whether the task should create output histograms
+    clusterizer: kClusterizerv3                     # Type of clusterizer to use. Possible options are defined in the header of the clusterizer
+    cellE: 0.1                                      # Minimum cell energy CHANGED!!
+    seedE: 0.5                                      # Seed energy threshold
+    cellTimeMin: -500e-9
+    cellTimeMax: +500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true                            # ADDED !!!!
+    remapMcAod: false
+    diffEAggregation: 0.0
+ClusterExotics:                                     # Cluster exotics identification component (actual removal is handled by the cluster container)
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # Whether the task should create outputhistograms
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+ClusterNonLinearity:                                # Cluster non-linearity correction component
+    enabled: false
+ClusterTrackMatcher:                                # Cluster-track matcher component
+    enabled: false                                  # Whether to enable the task
+ClusterHadronicCorrection:                          # Cluster hadronic correction component
+    enabled: false                                  # Whether to enable the task
+CellTrackMatcherAndMIPSubtraction:                  # Cell energy shift correction component
+    enabled: false                                   # Whether to enable the task
+
+
+
+#
+# ─── DEFAULT WITH TRACK MATCHING AND NONLIN ──────────────────────────────────────────────────────────
+#
+# - Description: these settings will be used for all clusters in the default branch and in the subsequent branches if not overwriten
+#                in subsequent additional configuration. These are the default settings and include a nonlin correction and track matching
+# - Clusterizer: V3
+# - NonLinCorr : yes
+# - TrackMatch : yes
+
+Clusterizer_NL:                                        # Clusterizer component
+    enabled: true                                   # Whether to enable the task
+    clusterizer: kClusterizerv3                     # Type of clusterizer to use. Possible options are defined in the header of the clusterizer
+    cellE: 0.1                                      # Minimum cell energy CHANGED!!
+    seedE: 0.5                                      # Seed energy threshold
+    cellTimeMin: -500e-9
+    cellTimeMax: +500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true                            # ADDED !!!!
+    clusterContainersNames:
+        - ClusterContainerNL
+ClusterExotics_NL:                                     # Cluster exotics identification component (actual removal is handled by the cluster container)
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # Whether the task should create outputhistograms
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+    clusterContainersNames:
+        - ClusterContainerNL
+ClusterNonLinearity_NL:                                # Cluster non-linearity correction component
+    enabled: true                                   # Whether to enable the task
+    setForceClusterE: true                          #for cluster energy to correct for non-linearity
+    createHistos: true                              # Whether the task should create output histograms
+    nonLinFunct: kTestBeamShaperWoScale                    # Sets the non-linearity function. Possible options are defined in the header of the cluster non-linearity correction component
+    clusterContainersNames:
+        - ClusterContainerNL
+ClusterTrackMatcher_NL:                                # Cluster-track matcher component
+    enabled: false
+    clusterContainersNames:
+        - ClusterContainerNL
+ClusterHadronicCorrection_NL:                          # Cluster hadronic correction component
+    enabled: false                                  # Whether to enable the task
+    clusterContainersNames:
+        - ClusterContainerNL

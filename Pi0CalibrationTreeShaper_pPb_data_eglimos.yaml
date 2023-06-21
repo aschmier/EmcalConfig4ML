@@ -1,0 +1,39 @@
+configurationName: "EMCal CalibPi0 Train"
+CellEnergy:                    #CUSTOMIZE # turns off/on the cell energy correction by OADB coefficients.
+    enabled: true
+    createHistos: true
+    enableShaperCorrection: true                    # ADDED !!
+    enableNewTempCalib: true  #Run-by-run (temperature) corrections.
+CellBadChannel:                #CUSTOMIZE # take all cells, or all cells but bad, or all cells but bad and warm.
+    enabled: true
+    load1DBadChMap: true
+    createHistos: true
+CellTimeCalib:
+    enabled: true
+    createHistos: true
+    doCalibrateLowGain: true                        # ADDED !!
+    doMergedBCs: true                               # ADDED !!
+    doCalibMergedLG: false                          # ADDED !!
+Clusterizer:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv1
+    cellE: 0.05
+    seedE: 0.1
+    cellTimeMin: -500e-9        # (Do apply time calib, but leave very large cuts -- apply cuts only at wagon configuration level).
+    cellTimeMax:  500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true                            # ADDED !!!!
+ClusterExotics:
+    enabled: true
+    createHistos: true
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+ClusterNonLinearity:
+    enabled: true
+    nonLinFunct: kTestBeamShaperWoScale            # Apply it at the macro level.
+    createHistos: true
+    setForceClusterE: true

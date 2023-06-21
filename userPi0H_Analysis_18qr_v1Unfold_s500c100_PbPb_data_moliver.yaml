@@ -1,0 +1,34 @@
+period: ""                                         # standard yaml file is located in:
+pass: ""                                           # AliPhysics/PWG/EMCAL/config/
+CellEnergy:
+    enabled: true
+    createHistos: false
+CellBadChannel:
+    enabled: true
+    createHistos: false
+CellTimeCalib:
+    enabled: true
+    createHistos: false
+Clusterizer:
+    enabled: true
+    createHistos: true
+    clusterizer: kClusterizerv1                    # Type of clusterizer to use. 
+    unfold: true
+    recalDistToBadChannels: true                   # True will recalculate the distance to bad channels
+    recalShowerShape: true                          # True will recalculate the shower shape
+    load1DBadChMap: true
+    cellTimeMin: -500e-9
+    cellTimeMax: +500e-9
+    cellE: 0.1
+    seedE: 0.5
+ClusterExotics:
+    enabled: true
+ClusterNonLinearity:
+    enabled: true
+    createHistos: true
+    nonLinFunct: kTestBeamShaperWoScale           # Latest and greatest
+ClusterTrackMatcher:                              # Cluster-track matcher component
+    enabled: true 
+   #pt track cut in old version!
+ClusterHadronicCorrection:                        # use no hadronic correction for pi0-h correlation (implemented in task)
+    enabled: false                            

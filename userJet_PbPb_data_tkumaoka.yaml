@@ -1,0 +1,53 @@
+# This YAML configuration is to run over data with 1 cluster collection.
+pass: "usedefault"
+inputObjects:
+    clusterContainers:
+        baseClusterContainer:
+            branchName: "caloClusters"
+        baseClusterContainer_1:         # Used after clusterizer
+            minE: 0.0
+            minPt: 0.0
+        baseClusterContainer_2:        # Used for cluster-track matcher and after
+            minE: 0.0
+            minPt: 0.0
+            clusNonLinCorrEnergyCut: 0.15
+CellEnergy:
+    enabled: true
+    createHistos: true
+    enableNewTempCalib: true
+CellBadChannel:
+    enabled: true
+    createHistos: true
+CellTimeCalib:
+    enabled: true
+    createHistos: true
+Clusterizer:
+    enabled: true
+    cellE: 0.1
+    seedE: 0.3
+    # By selecting the cluster container here, we set where it will be output
+    clusterContainersNames:
+        - baseClusterContainer
+ClusterExotics:
+    enabled: true
+    createHistos: true
+    clusterContainersNames:
+        - baseClusterContainer_1
+ClusterNonLinearity:
+    enabled: true
+    createHistos: true
+    nonLinFunct: kBeamTestCorrectedv4
+    clusterContainersNames:
+        - baseClusterContainer_1
+ClusterTrackMatcher:
+    enabled: true
+    createHistos: true
+    clusterContainersNames:
+        - baseClusterContainer_2
+ClusterHadronicCorrection:
+    enabled: true
+    createHistos: true
+    doMomDepMatching: true
+    hadCorr: 2.
+    clusterContainersNames:
+        - baseClusterContainer_2

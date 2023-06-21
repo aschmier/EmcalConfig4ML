@@ -1,0 +1,53 @@
+period: ""                                          # standard yaml file is located in:
+pass: "default"                                     # AliPhysics/PWG/EMCAL/config/
+CellEnergy:
+    createHistos: true
+    enabled: true                                   # Whether to enable the task
+    enableNewTempCalib: true                        # ADDED !!
+    enableShaperCorrection: true                    # ADDED !!
+    enableAdditionalScale: true                     # Set an additional energy scale shift on cell level. HIGHLY EXPERIMENTAL and should not be used for standard analyses!
+    additionalScaleValuesSM: [0.981, 0.970, 0.980]  # values for kPi0MCFinal/kTestBeamShaperWoScale
+CellBadChannel:
+    enabled: true
+    createHistos: true
+    load1DBadChMap: true
+CellTimeCalib:
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # ADDED !!
+    doCalibrateLowGain: true                        # ADDED !!
+    doMergedBCs: true                               # ADDED !!
+    doCalibMergedLG: false                          # ADDED !!
+Clusterizer:
+    enabled: true
+    createHistos: false
+    clusterizer: kClusterizerv3                     # faster version of v2
+    cellE: 0.1
+    seedE: 0.3
+    cellTimeMin: -500e-9
+    cellTimeMax: +500e-9
+    clusterTimeLength: 1e6
+    recalDistToBadChannels: true
+    recalShowerShape: true
+    load1DBadChMap: true
+    remapMcAod: false
+    diffEAggregation: 0.0
+ClusterExotics:
+    enabled: true                                   # Whether to enable the task
+    createHistos: true                              # Whether the task should create outputhistograms
+    fMaxFcross: 0.97                                # ADDED !!
+    fHighEnergyNdiffCut: 50                         # ADDED !!
+    fMinCellEnNdiffCut: 0                           # ADDED !!
+ClusterNonLinearity:
+    enabled: true                                   # Whether to enable the task
+    setForceClusterE: true                          #for cluster energy to correct for non-linearity
+    createHistos: true                              # Whether the task should create output histograms
+    nonLinFunct: kTestBeamShaperWoScale
+ClusterNonLinearityMCAfterburner:                   # MC Cluster additional non-linearity afterburner correction component - To be applied after the standard non-linearity correction
+    enabled: false
+ClusterTrackMatcher:                                # Cluster-track matcher component
+    enabled: true
+   #pt track cut in old version!
+ClusterHadronicCorrection:                          # use no hadronic correction for g-h correlation
+    enabled: true
+    createHistos: true
+    doMomDepMatching: true                          # This enables a momentum dependent eta/phi window for track matching
